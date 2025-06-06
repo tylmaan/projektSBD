@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 var tnsAdminPath = builder.Configuration.GetValue<string>("Oracle:TnsAdmin");
 var walletLocation = builder.Configuration.GetValue<string>("Oracle:TnsAdmin");  // WalletLocation mo¿e byæ ten sam, co TnsAdmin w Twojej konfiguracji
 
+Environment.SetEnvironmentVariable("TNS_ADMIN", tnsAdminPath);
+
 Oracle.ManagedDataAccess.Client.OracleConfiguration.TnsAdmin = tnsAdminPath;
 Oracle.ManagedDataAccess.Client.OracleConfiguration.WalletLocation = walletLocation;
 

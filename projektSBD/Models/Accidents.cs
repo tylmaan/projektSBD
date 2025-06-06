@@ -1,12 +1,15 @@
-﻿namespace projektSBD.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace projektSBD.Models
 {
+    [Table("ACCIDENTS")]
     public class Accidents
     {
-        public int AccidentID { get; set; }
-        public int CarID { get; set; }
-        public DateTime AccidentDate { get; set; }
-        public string Location { get; set; }
-        public string DamageDetails { get; set; }
+        public int ACCIDENTID { get; set; }
+        public int CARID { get; set; }
+        public DateTime ACCIDENTDATE { get; set; }
+        public string LOCATION { get; set; }
+        public string DAMAGEDETAILS { get; set; }
 
         public Car Car { get; set; }
     }
