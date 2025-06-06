@@ -17,13 +17,13 @@ public class AppDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<ServiceHistory>()
-        .HasKey(sh => sh.ServiceID);
+        .HasKey(sh => sh.SERVICEID);
 
         modelBuilder.Entity<CarOwner>()
             .HasKey(co => new { co.CarID, co.OwnerID });
 
         modelBuilder.Entity<Accidents>()
-            .HasKey(ai => ai.AccidentID);
+            .HasKey(ai => ai.ACCIDENTID);
 
         modelBuilder.Entity<CarOwner>()
             .HasOne(co => co.Car)

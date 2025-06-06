@@ -24,7 +24,7 @@ namespace OracleApiTest.Controllers
             {
                 // Wykorzystanie Entity Framework do zliczania wypadków
                 var accidentCount = await _context.Accidents
-                    .Where(a => a.CarID == carId)
+                    .Where(a => a.CARID == carId)
                     .CountAsync();
 
                 return Ok(new { CarID = carId, AccidentCount = accidentCount });
@@ -42,8 +42,8 @@ namespace OracleApiTest.Controllers
             {
                 // Zliczanie łącznego kosztu napraw w danym roku
                 var totalCost = await _context.ServiceHistories
-                    .Where(sh => sh.ServiceDate.Year == year)
-                    .SumAsync(sh => sh.Cost);
+                    .Where(sh => sh.SERVICEDATE.Year == year)
+                    .SumAsync(sh => sh.COST);
 
                 return Ok(new { Year = year, TotalServiceCost = totalCost });
             }

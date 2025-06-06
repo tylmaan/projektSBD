@@ -1,12 +1,16 @@
-﻿namespace projektSBD.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace projektSBD.Models
 {
+    [Table("SERVICEHISTORY")]
     public class ServiceHistory
     {
-        public int ServiceID { get; set; }
-        public int CarID { get; set; }
-        public DateTime ServiceDate { get; set; }
-        public string Description { get; set; }
-        public decimal Cost { get; set; }
+        public int SERVICEID { get; set; }
+        public int CARID { get; set; }
+        [Column("SERVICEDATE")]
+        public DateTime SERVICEDATE { get; set; }
+        public string DESCRIPTION { get; set; }
+        public decimal COST { get; set; }
 
         public Car Car { get; set; }
     }
