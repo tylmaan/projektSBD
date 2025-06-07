@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace projektSBD.Models
+namespace projektSBD.Models.plsql
 {
     public class CarExpiredTechCheck
     {

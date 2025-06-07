@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Oracle.ManagedDataAccess.Client;
-using projektSBD.Models;
+using projektSBD.Models.plsql;
 using System.Threading.Tasks;
 
 namespace projektSBD.Controllers
@@ -163,6 +163,9 @@ namespace projektSBD.Controllers
 
             return Ok(result);
         }
+
+
+
 
     }
 }
