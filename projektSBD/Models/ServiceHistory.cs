@@ -7,7 +7,6 @@ namespace projektSBD.Models
     {
         public int SERVICEID { get; set; }
         public int CARID { get; set; }
-        [Column("SERVICEDATE")]
         public DateTime SERVICEDATE { get; set; }
         public string DESCRIPTION { get; set; }
         public decimal COST { get; set; }

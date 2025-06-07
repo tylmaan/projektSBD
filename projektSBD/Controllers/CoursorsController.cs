@@ -1,7 +1,8 @@
 ﻿/*using Microsoft.AspNetCore.Mvc;
-using Oracle.ManagedDataAccess.Client;
-using System.Data;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace OracleApiTest.Controllers
 {
@@ -9,11 +10,11 @@ namespace OracleApiTest.Controllers
     [Route("[controller]")]
     public class CoursorsController : ControllerBase
     {
-        private readonly OracleConnection _connection;
+        private readonly AppDbContext _context;
 
-        public CoursorsController(OracleConnection connection)
+        public CoursorsController(AppDbContext context)
         {
-            _connection = connection;
+            _context = context;
         }
 
         [HttpGet("get-accident-counts")]
@@ -21,58 +22,26 @@ namespace OracleApiTest.Controllers
         {
             try
             {
-                if (_connection.State != ConnectionState.Open)
-                    await _connection.OpenAsync();
+                var c_car_accident = _context.Cars
+                    .Select(c => c.CARID);
 
-                // Blok PL/SQL do zliczania wypadków dla każdego samochodu
-                string plsqlBlock = @"
-                    DECLARE
-                      CURSOR c_car_accident IS
-                        SELECT CarID FROM Cars;
-
-                      v_count NUMBER;
-                      v_result VARCHAR2(32767);
-                    BEGIN
-                      FOR i_car IN c_car_accident LOOP
-                        SELECT COUNT(*) INTO v_count
-                        FROM Accidents
-                        WHERE CarID = i_car.CarID;
-
-                        IF v_count > 0 THEN
-                          v_result := v_result || 'Samochód ' || i_car.CarID || ' miał ' || v_count || ' wypadków' || CHR(10);
-                        END IF;
-                      END LOOP;
-
-                      :output := v_result;
-                    END;";
-
-                using (var cmd = _connection.CreateCommand())
+                var results = new List<string>();
+                foreach (var carId in await c_car_accident.ToListAsync())
                 {
-                    cmd.CommandText = plsqlBlock;
+                    var v_count = await _context.Accidents
+                        .CountAsync(a => a.CARID == carId);
 
-                    var outputParam = new OracleParameter(":output", OracleDbType.Varchar2, ParameterDirection.Output)
+                    if (v_count > 0)
                     {
-                        Size = 32767
-                    };
-                    cmd.Parameters.Add(outputParam);
-
-                    await cmd.ExecuteNonQueryAsync();
-
-                    var result = outputParam.Value.ToString();
-
-                    var resultsArray = result.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
-
-                    return Ok(new { Message = resultsArray });
+                        results.Add($"Samochód {carId} miał {v_count} wypadków");
+                    }
                 }
+
+                return Ok(new { Message = results.ToArray() });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Error = $"Failed to execute cursor block: {ex.Message}" });
-            }
-            finally
-            {
-                if (_connection.State == ConnectionState.Open)
-                    await _connection.CloseAsync();
+                return StatusCode(500, new { Error = $"Failed to fetch accident counts: {ex.Message}" });
             }
         }
 
