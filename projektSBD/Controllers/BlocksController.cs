@@ -1,4 +1,4 @@
-﻿/*using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,12 +7,12 @@ namespace OracleApiTest.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AnonymousBlocksController : ControllerBase
+    public class BlocksController : ControllerBase
     {
         private readonly AppDbContext _context;
 
         // Inicjalizacja DbContext
-        public AnonymousBlocksController(AppDbContext context)
+        public BlocksController(AppDbContext context)
         {
             _context = context;
         }
@@ -54,4 +54,3 @@ namespace OracleApiTest.Controllers
         }
     }
 }
-*/

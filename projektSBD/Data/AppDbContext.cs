@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using projektSBD.Models;
+using projektSBD.Models.Views;
 
 public class AppDbContext : DbContext
 {
@@ -13,6 +14,11 @@ public class AppDbContext : DbContext
     public DbSet<ServiceHistory> ServiceHistories { get; set; }
     public DbSet<InsurancePolicy> InsurancePolicies { get; set; }
     public DbSet<Claim> Claims { get; set; }
+    public DbSet<CarOwnerLookupView> CarOwnerLookupView { get; set; }
+    public DbSet<ClaimWithAccidentView> ClaimWithAccidentView { get; set; }
+    public DbSet<OwnerCarHistoryView> OwnerCarHistoryView { get; set; }
+
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -57,5 +63,20 @@ public class AppDbContext : DbContext
             .HasOne(cl => cl.InsurancePolicy)
             .WithMany(ip => ip.Claims)
             .HasForeignKey(cl => cl.POLICYID);
+
+
+        modelBuilder.Entity<CarOwnerLookupView>()
+            .HasNoKey()
+            .ToView("VW_CAR_OWNER_LOOKUP");
+        
+        modelBuilder.Entity<ClaimWithAccidentView>()
+            .HasNoKey()
+            .ToView("VW_CLAIM_WITH_ACCIDENTS");
+
+        modelBuilder.Entity<OwnerCarHistoryView>()
+            .HasNoKey()
+            .ToView("VW_OWNER_CAR_HISTORY");
+
+
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Oracle.ManagedDataAccess.Client;
-using projektSBD.Models.plsql;
+using projektSBD.Models.insurance_pkg;
 using System.Data;
 
 namespace projektSBD.Controllers
