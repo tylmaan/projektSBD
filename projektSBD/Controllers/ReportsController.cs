@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Oracle.ManagedDataAccess.Client;
+using projektSBD.Models;
 using projektSBD.Models.plsql;
 using System.Threading.Tasks;
 
@@ -95,7 +96,7 @@ namespace projektSBD.Controllers
 
 
         [HttpGet("cars-with-accidents-ref")]
-        public async Task<ActionResult<IEnumerable<CarWithAccidents>>> GetCarsWithAccidentsRef()
+        public async Task<ActionResult<PagedResult<CarWithAccidents>>> GetCarsWithAccidentsRef(int pageNumber = 1, int pageSize = 10)
         {
             var result = new List<CarWithAccidents>();
 
@@ -127,8 +128,23 @@ namespace projektSBD.Controllers
                 });
             }
 
-            return Ok(result);
+            // Zastosuj paginację na liście wyników
+            var paginated = result
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            var pagedResult = new PagedResult<CarWithAccidents>
+            {
+                TotalCount = result.Count,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                Data = paginated
+            };
+
+            return Ok(pagedResult);
         }
+
 
 
         [HttpGet("expired-tech-check")]
