@@ -9,7 +9,6 @@ namespace projektSBD.Models
         public int OWNERID { get; set; }
 
         public Car Car { get; set; }
-
         public Owner Owner { get; set; }
     }
 }

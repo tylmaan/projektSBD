@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using projektSBD.Models.Pagination;
 using projektSBD.Models.Views;
+using System.Reflection;
 
 namespace projektSBD.Controllers
 {
@@ -14,8 +16,6 @@ namespace projektSBD.Controllers
         {
             _context = context;
         }
-
-        
 
         [HttpGet("car-lookup")]
         public async Task<ActionResult<IEnumerable<CarOwnerLookupView>>> GetCarLookup([FromQuery] string brand = "", [FromQuery] string model = "")
@@ -31,16 +31,36 @@ namespace projektSBD.Controllers
             return await query.ToListAsync();
         }
 
+        
         [HttpGet("claims-with-accidents")]
-        public async Task<ActionResult<IEnumerable<ClaimWithAccidentView>>> GetClaimsWithAccidents([FromQuery] string status = "")
+        public async Task<ActionResult<PagedResult<ClaimWithAccidentView>>> GetClaimsWithAccidents(
+            [FromQuery] string status = "",
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
         {
             var query = _context.ClaimWithAccidentView.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(status))
                 query = query.Where(c => c.STATUS.ToLower() == status.ToLower());
 
-            return await query.ToListAsync();
+            var totalCount = await query.CountAsync();
+
+            var paginatedData = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var result = new PagedResult<ClaimWithAccidentView>
+            {
+                TotalCount = totalCount,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                Data = paginatedData
+            };
+
+            return Ok(result);
         }
+
 
         [HttpGet("owner-car-history")]
         public async Task<ActionResult<IEnumerable<OwnerCarHistoryView>>> GetOwnerCarHistory([FromQuery] int ownerId)
@@ -61,8 +81,5 @@ namespace projektSBD.Controllers
                 return StatusCode(500, $"Unexpected error: {ex.Message}");
             }
         }
-
-
-
     }
 }

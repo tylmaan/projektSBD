@@ -43,7 +43,6 @@ namespace projektSBD.Controllers
                     POLICYSTATUS = reader.GetString(5)
                 });
             }
-
             return Ok(result);
         }
 
@@ -73,10 +72,7 @@ namespace projektSBD.Controllers
                     PAYOUTAMOUNT = reader.GetDecimal(3)
                 });
             }
-
             return Ok(result);
         }
-
-
     }
 }

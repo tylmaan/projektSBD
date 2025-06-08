@@ -10,7 +10,6 @@ namespace projektSBD.Models.plsql
 
         [JsonIgnore]
         public DateTime? LAST_SERVICE { get; set; }
-
         public string LAST_SERVICE_DATE =>
             LAST_SERVICE?.ToString("yyyy-MM-dd") ?? "Never";
     }

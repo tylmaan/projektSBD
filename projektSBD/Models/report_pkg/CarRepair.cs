@@ -6,7 +6,6 @@ namespace projektSBD.Models.plsql
     {
         [JsonIgnore]
         public DateTime SERVICEDATE { get; set; }
-
         public string DATE =>
             SERVICEDATE.ToString("yyyy-MM-dd");
 

@@ -35,7 +35,6 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Konfiguracja request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

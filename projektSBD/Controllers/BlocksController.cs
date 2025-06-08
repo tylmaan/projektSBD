@@ -10,8 +10,6 @@ namespace OracleApiTest.Controllers
     public class BlocksController : ControllerBase
     {
         private readonly AppDbContext _context;
-
-        // Inicjalizacja DbContext
         public BlocksController(AppDbContext context)
         {
             _context = context;
@@ -22,7 +20,6 @@ namespace OracleApiTest.Controllers
         {
             try
             {
-                // Wykorzystanie Entity Framework do zliczania wypadków
                 var accidentCount = await _context.Accidents
                     .Where(a => a.CARID == carId)
                     .CountAsync();
@@ -40,7 +37,6 @@ namespace OracleApiTest.Controllers
         {
             try
             {
-                // Zliczanie łącznego kosztu napraw w danym roku
                 var totalCost = await _context.ServiceHistories
                     .Where(sh => sh.SERVICEDATE.Year == year)
                     .SumAsync(sh => sh.COST);

@@ -16,9 +16,7 @@ namespace projektSBD.Models
         public decimal? ENGINESIZE { get; set; }
 
         public ICollection<CarOwner> CarOwners { get; set; }
-
         public ICollection<ServiceHistory> ServiceHistories { get; set; }
-
         public ICollection<Accidents> Accidents { get; set; }
         public ICollection<InsurancePolicy> InsurancePolicies { get; set; }
     }

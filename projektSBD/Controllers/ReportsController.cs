@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Oracle.ManagedDataAccess.Client;
-using projektSBD.Models;
+using projektSBD.Models.Pagination;
 using projektSBD.Models.plsql;
 using System.Threading.Tasks;
 
@@ -52,9 +52,9 @@ namespace projektSBD.Controllers
                     DAMAGEDETAILS = reader.GetString(2)
                 });
             }
-
             return Ok(result);
         }
+
 
         [HttpGet("repairs-ref/{carId}")]
         public async Task<ActionResult<IEnumerable<CarRepair>>> GetCarRepairsRef(int carId)
@@ -128,7 +128,6 @@ namespace projektSBD.Controllers
                 });
             }
 
-            // Zastosuj paginację na liście wyników
             var paginated = result
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
@@ -146,9 +145,8 @@ namespace projektSBD.Controllers
         }
 
 
-
         [HttpGet("expired-tech-check")]
-        public async Task<ActionResult<IEnumerable<CarExpiredTechCheck>>> GetExpiredTechnicalCheck()
+        public async Task<ActionResult<PagedResult<CarExpiredTechCheck>>> GetExpiredTechnicalCheck(int pageNumber = 1, int pageSize = 10)
         {
             var result = new List<CarExpiredTechCheck>();
 
@@ -177,11 +175,18 @@ namespace projektSBD.Controllers
                 });
             }
 
-            return Ok(result);
+            var paginated = result
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            return Ok(new PagedResult<CarExpiredTechCheck>
+            {
+                TotalCount = result.Count,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                Data = paginated
+            });
         }
-
-
-
-
     }
 }

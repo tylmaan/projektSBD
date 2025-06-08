@@ -18,8 +18,6 @@ public class AppDbContext : DbContext
     public DbSet<ClaimWithAccidentView> ClaimWithAccidentView { get; set; }
     public DbSet<OwnerCarHistoryView> OwnerCarHistoryView { get; set; }
 
-
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -64,7 +62,6 @@ public class AppDbContext : DbContext
             .WithMany(ip => ip.Claims)
             .HasForeignKey(cl => cl.POLICYID);
 
-
         modelBuilder.Entity<CarOwnerLookupView>()
             .HasNoKey()
             .ToView("VW_CAR_OWNER_LOOKUP");
@@ -76,7 +73,5 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<OwnerCarHistoryView>()
             .HasNoKey()
             .ToView("VW_OWNER_CAR_HISTORY");
-
-
     }
 }

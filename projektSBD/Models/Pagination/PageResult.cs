@@ -1,4 +1,4 @@
-﻿namespace projektSBD.Models
+﻿namespace projektSBD.Models.Pagination
 {
     public class PagedResult<T>
     {
@@ -6,7 +6,6 @@
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
 
-        // 👉 TO MUSI BYĆ:
         public List<T> Data { get; set; }
     }
 }
