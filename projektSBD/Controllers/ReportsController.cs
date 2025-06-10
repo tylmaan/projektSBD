@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Oracle.ManagedDataAccess.Client;
 using projektSBD.Models.Pagination;
@@ -94,7 +95,7 @@ namespace projektSBD.Controllers
             return Ok(result);
         }
 
-
+        
         [HttpGet("cars-with-accidents-ref")]
         public async Task<ActionResult<PagedResult<CarWithAccidents>>> GetCarsWithAccidentsRef(int pageNumber = 1, int pageSize = 10)
         {
